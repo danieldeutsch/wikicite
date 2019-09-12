@@ -1,0 +1,174 @@
+<!-- You must include this JavaScript file -->
+<script src="https://assets.crowd.aws/crowd-html-elements.js"></script>
+
+<!-- For the full list of available Crowd HTML Elements and their input/output documentation,
+      please refer to https://docs.aws.amazon.com/sagemaker/latest/dg/sms-ui-template-reference.html -->
+
+<!-- You must include crowd-form so that your task submits answers to MTurk -->
+<crowd-form answer-format="flatten-objects">
+
+    <!-- The crowd-classifier element will create a tool for the Worker to select the
+           correct answer to your question -->
+    <crowd-classifier
+        categories="['Yes', 'No', 'Unclear', 'Error']"
+        header="Does this document provide evidence to support this sentence?"
+        name="category">
+
+        <classification-target>
+            <div style="margin-bottom: 80px">
+                <p><b>Context:</b> ${context}</p>
+                <p><b>Sentence:</b> ${sentence}</p>
+                <hr>
+                <p><b>Document:</b> ${document}</p>
+            </div>
+        </classification-target>
+
+        <!-- Use the short-instructions section for quick instructions that the Worker
+              will see while working on the task. Including some basic examples of
+              good and bad answers here can help get good results. You can include
+              any HTML here. -->
+        <short-instructions>
+            Please choose the correct category for the document.
+        </short-instructions>
+
+        <!-- Use the full-instructions section for more detailed instructions that the
+              Worker can open while working on the task. Including more detailed
+              instructions and additional examples of good and bad answers here can
+              help get good results. You can include any HTML here. -->
+        <full-instructions header="Evidence Finding Instructions">
+            <h2>Goal</h2>
+            <p>
+                The goal of this task is to decide whether or not a reference document
+                provides <em>supporting evidence</em> for a particular sentence.
+            </p>
+            <p>
+                If a sentence states some information and the provided document also contains
+                part or all of that same information, then the document <em>does</em> provide
+                supporting evidence (a <b>Yes</b> answer).
+                Otherwise, the document <em>does not</em> support the sentence (a <b>No</b> answer).
+            </p>
+            <h2>Instructions</h2>
+            <p>
+                Carefully read the input sentence and make sure you understand what it says.
+                If necessary, use the provided context to get a better understanding.
+                Then, look in the reference document for that same information and make a decision
+                based on the following criteria:
+                <ul>
+                    <li>If the document provides evidence that the sentence is true, say <b>Yes</b>.</li>
+                    <li>If the document does not provide evidence, say <b>No</b>.</li>
+                    <li>If the answer is not clear, say <b>Unclear</b>, but please use this option rarely.</li>
+                    <li>If there is an error in the task, say <b>Error</b>.</li>
+                </ul>
+                Only use the document to make your decision. If the context provides supporting
+                evidence, ignore it.
+
+                The documents may be very long, so for some tasks, we have provided highlights which may help you find information in the
+                document more easily. You may also find using "ctrl-f" (Windows) or "cmd-f" (Mac) to search
+                for keywords may help you make your decision faster.
+            </p>
+
+            <h2>Examples</h2>
+            <div style="border:1px solid black">
+                <b>Yes</b> example: the document says the women who were stripped over the silver medal are seeking $10 million (see <mark>highlights</mark> below).
+                <div style="margin-left: 40px">
+                    <classification-target>
+                        <p>
+                            <b>Context:</b>
+                            Following Russia's banning from the 2018 Winter Olympics and the stripping of medals from multiple Russian athletes, Russian oligarch Mikhail Prokhorov, controlling owner of the Brooklyn Nets basketball team, agreed to finance a defamation lawsuit in New York against Rodchenkov.
+                            The suit claims that Rodchenkov defamed three Russian biathletes — Olga Zaytseva, Yana Romanova and Olga Vilukhina — when Rodchenkov included them on a list of athletes who took performance-enhancing drugs as part of a state-controlled program that corrupted the 2014 Winter Olympics in Sochi, Russia.
+                        </p>
+                        <p>
+                            <b>Sentence:</b>
+                            The women, who were <mark>stripped of the silver medal they won as part of a relay team, are seeking $10 million each in damages</mark>.
+                        </p>
+                        <hr>
+                        <p>
+                            <b>Document:</b>
+                            PYEONGCHANG, South Korea — With Russia performing feebly at the Winter Games because many of its best athletes are barred for doping violations, the Russian oligarch who owns the N. B.A.’s Brooklyn Nets is helping to finance an attempt to attack the credibility of the whistle-blower who exposed the country’s elaborate doping program.
+
+                            The oligarch, Mikhail D. Prokhorov, who led Russia’s biathlon federation before and during the 2014 Sochi Games, is backing a long-shot legal effort against the whistle-blower, Dr. Grigory Rodchenkov, that will commence with a defamation lawsuit to be filed in New York State Court on Tuesday.
+                            The suit, which The New York Times reviewed before it was filed, claims Dr. Rodchenkov defamed three now-retired Russian biathletes — Olga Zaytseva, Yana Romanova and Olga Vilukhina — when he linked them to the state-controlled scheme that corrupted the last Winter Games in Sochi, Russia.
+                            The women, who were <mark>stripped of the silver medal they secured in a relay event at the Sochi Games, are seeking $10 million each in damages</mark>.
+                        </p>
+                    </classification-target>
+                </div>
+            </div>
+
+            <div style="border:1px solid black">
+                <b>Yes</b> example: the document says that de Haan was selected to play in the OHL All-Star Game and the CHL Top Prospects Game (see the <mark>highlights</mark> below).
+                <div style="margin-left: 40px">
+                    <classification-target>
+                        <p>
+                            <b>Context:</b>
+                            de Haan was drafted by the Oshawa Generals of the Ontario Hockey League (OHL) in the third round, 50th overall, at the 2007 OHL Priority Selection.
+                            Prior to joining the Generals, he played one season with the Kemptville 73's of the Central Junior A Hockey League.
+                            He was named the Rookie of the Year in the 2007–08 season after scoring 42 points in 58 games.
+                            In his rookie season with the Generals in 2008–09, he finished second on the team in scoring with 63 points, scoring eight goals and adding 55 assists.
+                        </p>
+                        <p>
+                            <b>Sentence:</b>
+                            The Generals named him their top rookie and top defenceman, while he was also <mark>selected to play in the OHL All-Star Game and the 2009 CHL Top Prospects Game</mark>.
+                        </p>
+                        <hr>
+                        <p>
+                            <b>Document:</b>
+                            In his first season in the Ontario Hockey League, de Haan finished second in the league among rookie defensemen, and first among Oshawa defensemen with 63 points (8-55-63) in 68 games in 2008-09.
+                            His year was highlighted by a <mark>selection to the OHL All-Star Classic as well as the 2009 CHL Top Prospects Game</mark>.
+                            Oshawa’s third-round selection (50th) in 2007, de Haan was named the 2007-08 Central Junior Hockey League player of the year after totaling 42 points (3-39-42) in 58 games as a member of the Kemptville 73’s.
+                        </p>
+                    </classification-target>
+                </div>
+            </div>
+
+            <div style="border:1px solid black">
+                <b>No</b> example: The document talks about Giuseppe Recchi and a different company than the one referred to in the sentence.
+                The document does not talk about what the company does or when it was founded.
+                <div style="margin-left: 40px">
+                    <classification-target>
+                        <p>
+                            <b>Context:</b>
+                            Born into a family of Turin businessmen, Giuseppe Recchi has started working for his Family’s firm, Impresa Recchi Costruzioni Generali, after earning his engineering degree at Turin's Politechnic University in 1989.
+                        </p>
+                        <p>
+                            <b>Sentence:</b>
+                            Founded in 1933, the company's main activities are related to the construction of large infrastructure, such as power stations, bridges, dams, highways and tunnelling projects in Italy and also in Africa, Latin America, North America and Asia.
+                        </p>
+                        <hr>
+                        <p>
+                            <b>Document:</b>
+                            Recchi Ingegneria e Partecipazioni-S.p.A. is the holding and services company operating in the field of engineering and project and construction management.
+                            It was founded in 2003, drawing on the experience acquired by the Recchi Costruzioni Generali Group in five continents.
+                            For more than eighty years, Recchi has stood for a culture of construction, reliability, professionalism and executive and financial management capabilities in the handling of complex infrastructure and real estate ventures.
+                        </p>
+                    </classification-target>
+                </div>
+            </div>
+
+            <div style="border:1px solid black">
+                <b>No</b> example: The document does not talk about Sonny Heinilä at all.
+                <div style="margin-left: 40px">
+                    <classification-target>
+                        <p>
+                            <b>Context:</b>
+                            While at Cygnaeus high school (1997), he played with the Joona Toivanen Trio, as well as joining gigs at local jam sessions.
+                            In 1998 he attended the jazz program at Finnish Music Conservatory, graduating in 2002, and then moved to Helsinki, and joined the Sibelius Academy to study jazz with Jukkis Uotila.
+                        </p>
+                        <p>
+                            <b>Sentence:</b>
+                            In 2005–06, he studied composition under the guidance of Sonny Heinilä.
+                        </p>
+                        <hr>
+                        <p>
+                            <b>Document:</b>
+                            Born into a musical family, Olavi Louhivuori (b. 13 July 1981) grew up in Jyväskylä, Central-Finland, surrounded by music and musicians.
+                            His father is a professor at Music Department of the University of Jyväskylä and mother a violinist and music teacher.
+                            Everyone of the seven member Louhivuori family plays an instrument.
+                            Olavi began studying violin at the age of 4, but changed to cello and piano at the age of 8.
+                        </p>
+                    </classification-target>
+                </div>
+            </div>
+        </full-instructions>
+
+    </crowd-classifier>
+</crowd-form>
