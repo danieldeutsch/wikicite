@@ -5,14 +5,14 @@ For each sentence with a citation, we can use the previous sentences as the cont
 
 This directory contains the code that was used to produce the WikiCite dataset.
 The final dataset can be downloaded with the following links:
-  - https://danieldeutsch.s3.amazonaws.com/summarize/data/wikicite/train.v1.0.jsonl.gz
-  - https://danieldeutsch.s3.amazonaws.com/summarize/data/wikicite/valid.v1.0.jsonl.gz
-  - https://danieldeutsch.s3.amazonaws.com/summarize/data/wikicite/test.v1.0.jsonl.gz
+  - https://danieldeutsch.s3.amazonaws.com/summarize/data/wikicite/train.v1.1.jsonl.gz
+  - https://danieldeutsch.s3.amazonaws.com/summarize/data/wikicite/valid.v1.1.jsonl.gz
+  - https://danieldeutsch.s3.amazonaws.com/summarize/data/wikicite/test.v1.1.jsonl.gz
 
 Tokenized versions can also be found here:
-  - https://danieldeutsch.s3.amazonaws.com/summarize/data/wikicite/train.tokenized.v1.0.jsonl.gz
-  - https://danieldeutsch.s3.amazonaws.com/summarize/data/wikicite/valid.tokenized.v1.0.jsonl.gz
-  - https://danieldeutsch.s3.amazonaws.com/summarize/data/wikicite/test.tokenized.v1.0.jsonl.gz
+  - https://danieldeutsch.s3.amazonaws.com/summarize/data/wikicite/train.tokenized.v1.1.jsonl.gz
+  - https://danieldeutsch.s3.amazonaws.com/summarize/data/wikicite/valid.tokenized.v1.1.jsonl.gz
+  - https://danieldeutsch.s3.amazonaws.com/summarize/data/wikicite/test.tokenized.v1.1.jsonl.gz
 
 See https://github.com/danieldeutsch/summarize for more information about the preprocessing code.
 
@@ -170,6 +170,12 @@ It also will rename the fields to more explicit names.
 qsub scripts/cloze/generate-final-splits.sh data/summary-cloze/<date>
 
 python -m wikicite.cloze.verify data/summary-cloze/<date>/final
+```
+
+In version 1.1, a bug was corrected that did not correctly group together all of the reference documents cited within a sentence, only those which had the same offsets.
+To ensure the dataset splits were the same as in 1.0, we added a postprocessing script to fix the problem.
+```
+python -m wikicite.cloze.postprocess <input-file-v1.0> <output-file-v1.1>
 ```
 
 ## Appendix
